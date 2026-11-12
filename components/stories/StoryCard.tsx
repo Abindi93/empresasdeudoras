@@ -171,7 +171,7 @@ export function StoryCard({ story }: StoryCardProps) {
               }`}
               title="Fantasma total"
             >
-              <span>👻</span>
+              <span>💩</span>
               <span className="text-xs font-extrabold text-purple-700">{reactions.ghost}</span>
             </button>
         </div>
