@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Fanti } from '@/components/mascot/Fanti';
 import { Search } from 'lucide-react';
 import { useSiteSearch } from '@/components/search/SearchContext';
 
@@ -17,7 +16,7 @@ export function Header() {
           className="group flex shrink-0 items-center gap-2.5 text-[#211B35] transition-transform active:scale-95"
         >
           <div className="relative">
-            <Fanti mood="default" size="sm" animate={false} className="w-9 h-9" />
+            <span role="img" aria-label="Popó" className="block text-4xl leading-none">💩</span>
             <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#B8F28B] opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#B8F28B]"></span>
@@ -52,7 +51,7 @@ export function Header() {
             href="/contar-mi-historia"
             className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-bold text-white bg-[#8B5CF6] hover:bg-[#7C3AED] active:scale-95 transition-all duration-150 rounded-xl shadow-[0_4px_14px_rgba(139,92,246,0.35)] hover:shadow-[0_6px_20px_rgba(139,92,246,0.45)] whitespace-nowrap"
           >
-            <span>👻</span>
+            <span>💩</span>
             <span>Contar mi historia</span>
           </Link>
         </div>
