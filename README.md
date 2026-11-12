@@ -31,7 +31,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-El frontend queda en `http://localhost:3000` y la API en `http://localhost:4000`.
+El frontend queda en `http://localhost:3001` y la API en `http://localhost:4000`.
 
 ## API inicial
 
@@ -49,7 +49,7 @@ Las historias y empresas actuales se sirven desde los datos semilla existentes. 
 
 ## Aprobar testimonios
 
-Con la API y el frontend encendidos, abre `http://localhost:3000/admin/revision`. El panel pide `ADMIN_USERNAME` y `ADMIN_PASSWORD`, configurados en `server/.env`. Desde ahí puedes ver los datos del envío, aprobarlo para que aparezca en el muro o rechazarlo. El archivo `.env` no se sube al repositorio; usa `server/.env.example` como referencia para configurar cada entorno.
+Con la API y el frontend encendidos, abre `http://localhost:3001/admin/revision`. El panel pide `ADMIN_USERNAME` y `ADMIN_PASSWORD`, configurados en `server/.env`. Desde ahí puedes ver los datos del envío, aprobarlo para que aparezca en el muro o rechazarlo. El archivo `.env` no se sube al repositorio; usa `server/.env.example` como referencia para configurar cada entorno.
 
 ## Configuración
 
