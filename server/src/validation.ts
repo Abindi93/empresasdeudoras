@@ -1,0 +1,45 @@
+import { z } from 'zod';
+
+const storyCategory = z.enum([
+  'desaparicion-paranormal',
+  'manana-te-pago',
+  'factura-maldita',
+  'laberinto-contabilidad',
+  'promesas-ultratumba',
+  'final-feliz',
+]);
+
+export const submissionSchema = z.object({
+  fullName: z.string().trim().min(2).max(120),
+  email: z.string().trim().email().max(254),
+  ylaiGeneration: z.string().trim().max(20).optional(),
+  country: z.string().trim().min(2).max(100),
+  city: z.string().trim().max(100),
+  companyName: z.string().trim().min(2).max(160),
+  companyLegalName: z.string().trim().max(200).optional(),
+  companyCountry: z.string().trim().min(2).max(100),
+  companyCity: z.string().trim().max(100),
+  companyWebsite: z.string().trim().url().max(300).optional().or(z.literal('')),
+  serviceType: z.string().trim().min(2).max(200),
+  amount: z.number().positive().finite().optional(),
+  currency: z.string().trim().length(3).toUpperCase(),
+  agreementDate: z.string().trim().max(30).optional(),
+  expectedPaymentDate: z.string().trim().min(4).max(30),
+  category: storyCategory,
+  title: z.string().trim().min(8).max(180),
+  storyBeginning: z.string().trim().min(20).max(10_000),
+  storyAgreement: z.string().trim().max(10_000).optional(),
+  storyWhatHappened: z.string().trim().min(20).max(10_000),
+  storyCollectionAttempt: z.string().trim().min(20).max(10_000),
+  storyCurrentSituation: z.string().trim().max(10_000).optional(),
+  evidenceFiles: z.array(z.object({
+    id: z.string().trim().min(1).max(100),
+    name: z.string().trim().min(1).max(255),
+    size: z.string().trim().min(1).max(50),
+    type: z.string().trim().min(1).max(100),
+  })).max(10),
+  hasConfirmedTruth: z.literal(true),
+  acceptedTerms: z.literal(true),
+  acceptedPrivacy: z.literal(true),
+  signatureFullName: z.string().trim().min(2).max(120),
+});

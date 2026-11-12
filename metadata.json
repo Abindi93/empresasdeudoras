@@ -1,0 +1,8 @@
+{
+  "name": "Factura Fantasma",
+  "description": "Los fantasmas existen. Algunos tienen departamento de finanzas. Plataforma comunitaria interactiva de historias de impago.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
