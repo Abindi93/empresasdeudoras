@@ -18,7 +18,8 @@ const HowItWorksContext = createContext<HowItWorksContextType>({
 export const useHowItWorks = () => useContext(HowItWorksContext);
 
 export function HowItWorksProvider({ children }: { children: React.ReactNode }) {
-  const [isOpen, setIsOpen] = useState(false);
+  // It acts as the entry notice: a fresh visit or browser refresh starts with it open.
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
     <HowItWorksContext.Provider

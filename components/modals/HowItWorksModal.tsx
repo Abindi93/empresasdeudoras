@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Fanti } from '@/components/mascot/Fanti';
-import { X, CheckCircle2, ShieldCheck, Eye, Scale, Sparkles, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Eye, Scale, Sparkles } from 'lucide-react';
 
 interface HowItWorksModalProps {
   isOpen: boolean;
@@ -13,18 +13,13 @@ export function HowItWorksModal({ isOpen, onClose }: HowItWorksModalProps) {
   const [hasAgreed, setHasAgreed] = useState(false);
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
     if (isOpen) {
-      window.addEventListener('keydown', handleKeyDown);
       document.body.style.overflow = 'hidden';
     }
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = 'unset';
     };
-  }, [isOpen, onClose]);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -67,33 +62,21 @@ export function HowItWorksModal({ isOpen, onClose }: HowItWorksModalProps) {
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#211B35]/60 backdrop-blur-sm animate-fadeIn"
-      onClick={onClose}
     >
       <div
         className="relative w-full max-w-lg bg-white rounded-3xl border border-[#211B35]/15 shadow-2xl p-6 sm:p-8 overflow-hidden text-[#211B35] animate-scaleUp"
-        onClick={(e) => e.stopPropagation()}
       >
-        {/* Top Close Button */}
-        <button
-          type="button"
-          onClick={onClose}
-          className="absolute top-5 right-5 p-2 text-[#777286] hover:text-[#211B35] hover:bg-slate-100 rounded-full transition-colors"
-          aria-label="Cerrar modal"
-        >
-          <X className="w-5 h-5" />
-        </button>
-
         {/* Modal Header */}
-        <div className="flex items-center gap-3.5 mb-5 pr-8">
+        <div className="flex items-center gap-3.5 mb-5">
           <div className="shrink-0">
             <Fanti mood="writer" size="sm" animate={true} className="w-12 h-12" />
           </div>
           <div>
             <span className="text-[10px] font-black uppercase tracking-wider text-[#8B5CF6] bg-[#8B5CF6]/10 px-2 py-0.5 rounded-full inline-block mb-0.5">
-              Reglas de Convivencia
+              Aviso de entrada
             </span>
             <h2 className="text-xl sm:text-2xl font-extrabold text-[#211B35] tracking-tight">
-              ¿Cómo funciona Empresa Deudora? 👻
+              Antes de entrar a Empresa Deudora 👻
             </h2>
           </div>
         </div>
@@ -134,7 +117,7 @@ export function HowItWorksModal({ isOpen, onClose }: HowItWorksModalProps) {
             onChange={(e) => setHasAgreed(e.target.checked)}
             className="w-4 h-4 rounded text-[#8B5CF6] focus:ring-[#8B5CF6] border-amber-300"
           />
-          <span>Entiendo que los testimonios son experiencias comunitarias de buena fe.</span>
+          <span>Confirmo que soy mayor de 18 años y que entiendo las reglas de la comunidad.</span>
         </label>
 
         {/* Action Button: Required exact copy */}
@@ -142,14 +125,15 @@ export function HowItWorksModal({ isOpen, onClose }: HowItWorksModalProps) {
           <button
             type="button"
             onClick={handleAcceptAndGo}
-            className="w-full py-3.5 px-5 bg-[#8B5CF6] hover:bg-[#7C3AED] active:scale-98 text-white font-extrabold text-sm rounded-2xl shadow-[0_4px_16px_rgba(139,92,246,0.35)] transition-all flex items-center justify-center gap-2"
+            disabled={!hasAgreed}
+            className="w-full py-3.5 px-5 bg-[#8B5CF6] hover:bg-[#7C3AED] active:scale-98 disabled:cursor-not-allowed disabled:opacity-50 text-white font-extrabold text-sm rounded-2xl shadow-[0_4px_16px_rgba(139,92,246,0.35)] transition-all flex items-center justify-center gap-2"
           >
-            <span>He leído y acepto las reglas, ir al chismecito</span>
+            <span>Acepto las reglas y soy mayor de 18 años</span>
             <span>🍿</span>
           </button>
 
           <p className="text-[11px] text-center text-[#777286]">
-            Cero registros obligatorios · Acceso libre e inmediato
+            Marca la casilla para continuar
           </p>
         </div>
       </div>
