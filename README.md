@@ -47,6 +47,10 @@ El frontend queda en `http://localhost:3000` y la API en `http://localhost:4000`
 
 Las historias y empresas actuales se sirven desde los datos semilla existentes. Las nuevas historias enviadas se guardan localmente en `server/data/submissions.json`, un archivo ignorado por Git porque puede contener datos personales. Antes de producción, sustituye esa capa por una base de datos administrada y almacenamiento privado para las evidencias.
 
+## Aprobar testimonios
+
+Con la API y el frontend encendidos, abre `http://localhost:3000/admin/revision`. El panel pide `ADMIN_USERNAME` y `ADMIN_PASSWORD`, configurados en `server/.env`. Desde ahí puedes ver los datos del envío, aprobarlo para que aparezca en el muro o rechazarlo. El archivo `.env` no se sube al repositorio; usa `server/.env.example` como referencia para configurar cada entorno.
+
 ## Configuración
 
 El frontend usa `NEXT_PUBLIC_API_URL` para conectar a la API; por defecto utiliza `http://localhost:4000`. Configura `CORS_ORIGIN` en `server/.env` con el dominio del frontend en cada entorno.

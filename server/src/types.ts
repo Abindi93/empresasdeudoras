@@ -8,8 +8,10 @@ export type StoryCategory =
 
 export interface StorySubmission {
   id: string;
-  status: 'pending-review';
+  status: 'pending-review' | 'approved' | 'rejected';
   receivedAt: string;
+  reviewedAt?: string;
+  reviewedBy?: string;
   fullName: string;
   email: string;
   ylaiGeneration?: string;

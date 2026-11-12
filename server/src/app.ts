@@ -5,13 +5,40 @@ import {
   findStory,
   listCompanies,
   listCompanyStories,
+  listSubmissions,
   listStories,
   saveSubmission,
   type StorySort,
+  updateSubmissionStatus,
 } from './store.js';
 import { submissionSchema } from './validation.js';
 
 const sortValues = new Set<StorySort>(['recientes', 'comentadas', 'pendientes', 'resueltas']);
+const submissionStatusValues = new Set(['pending-review', 'approved', 'rejected']);
+
+function authenticatedAdmin(request: express.Request) {
+  const configuredUsername = process.env.ADMIN_USERNAME;
+  const configuredPassword = process.env.ADMIN_PASSWORD;
+  const header = request.header('authorization');
+
+  if (!configuredUsername || !configuredPassword || !header?.startsWith('Basic ')) return undefined;
+
+  try {
+    const [username, password] = Buffer.from(header.slice(6), 'base64').toString('utf8').split(':');
+    return username === configuredUsername && password === configuredPassword ? username : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function requireAdmin(request: express.Request, response: express.Response) {
+  const username = authenticatedAdmin(request);
+  if (username) return username;
+
+  response.setHeader('WWW-Authenticate', 'Basic realm="Panel de revisión"');
+  response.status(401).json({ error: 'Credenciales de administrador requeridas.' });
+  return undefined;
+}
 
 export function createApp() {
   const app = express();
@@ -27,17 +54,21 @@ export function createApp() {
     response.json({ status: 'ok', service: 'empresasdeudoras-api' });
   });
 
-  app.get('/api/stories', (request, response) => {
+  app.get('/api/stories', async (request, response, next) => {
     const sort = typeof request.query.sort === 'string' && sortValues.has(request.query.sort as StorySort)
       ? request.query.sort as StorySort
       : 'recientes';
-    response.json(listStories({
-      q: typeof request.query.q === 'string' ? request.query.q : undefined,
-      category: typeof request.query.category === 'string' ? request.query.category : undefined,
-      country: typeof request.query.country === 'string' ? request.query.country : undefined,
-      city: typeof request.query.city === 'string' ? request.query.city : undefined,
-      sort,
-    }));
+    try {
+      response.json(await listStories({
+        q: typeof request.query.q === 'string' ? request.query.q : undefined,
+        category: typeof request.query.category === 'string' ? request.query.category : undefined,
+        country: typeof request.query.country === 'string' ? request.query.country : undefined,
+        city: typeof request.query.city === 'string' ? request.query.city : undefined,
+        sort,
+      }));
+    } catch (error) {
+      next(error);
+    }
   });
 
   app.get('/api/stories/:slug', (request, response) => {
@@ -77,6 +108,42 @@ export function createApp() {
         status: submission.status,
         receivedAt: submission.receivedAt,
       });
+    } catch (error) {
+      return next(error);
+    }
+  });
+
+  app.get('/api/admin/submissions', async (request, response, next) => {
+    const username = requireAdmin(request, response);
+    if (!username) return;
+
+    const status = typeof request.query.status === 'string' && submissionStatusValues.has(request.query.status)
+      ? request.query.status as 'pending-review' | 'approved' | 'rejected'
+      : undefined;
+    try {
+      return response.json(await listSubmissions(status));
+    } catch (error) {
+      return next(error);
+    }
+  });
+
+  app.patch('/api/admin/submissions/:id', async (request, response, next) => {
+    const username = requireAdmin(request, response);
+    if (!username) return;
+
+    const status = request.body?.status;
+    if (typeof status !== 'string' || !submissionStatusValues.has(status)) {
+      return response.status(422).json({ error: 'Estado de revisión inválido.' });
+    }
+
+    try {
+      const submission = await updateSubmissionStatus(
+        request.params.id,
+        status as 'pending-review' | 'approved' | 'rejected',
+        username,
+      );
+      if (!submission) return response.status(404).json({ error: 'Testimonio no encontrado.' });
+      return response.json(submission);
     } catch (error) {
       return next(error);
     }
