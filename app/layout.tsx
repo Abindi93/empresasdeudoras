@@ -4,6 +4,7 @@ import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { HowItWorksProvider } from '@/components/modals/HowItWorksContext';
+import { SearchProvider } from '@/components/search/SearchContext';
 
 const fredoka = Fredoka({
   subsets: ['latin'],
@@ -60,11 +61,13 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#211B35] font-sans antialiased selection:bg-[#B8F28B] selection:text-[#211B35]" suppressHydrationWarning>
         <HowItWorksProvider>
-          <Header />
-          <main className="flex-1">
-            {children}
-          </main>
-          <Footer />
+          <SearchProvider>
+            <Header />
+            <main className="flex-1">
+              {children}
+            </main>
+            <Footer />
+          </SearchProvider>
         </HowItWorksProvider>
       </body>
     </html>

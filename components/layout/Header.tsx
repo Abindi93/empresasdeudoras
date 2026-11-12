@@ -3,8 +3,12 @@
 import React from 'react';
 import Link from 'next/link';
 import { Fanti } from '@/components/mascot/Fanti';
+import { Search } from 'lucide-react';
+import { useSiteSearch } from '@/components/search/SearchContext';
 
 export function Header() {
+  const { isSearchOpen, toggleSearch } = useSiteSearch();
+
   return (
     <header className="sticky top-0 z-40 border-b border-[#211B35]/10 bg-[#FAF9F6]/90 backdrop-blur-md">
       <div className="mx-auto flex h-18 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
@@ -29,7 +33,21 @@ export function Header() {
           </div>
         </Link>
 
-        <div className="flex shrink-0 items-center">
+        <div className="flex shrink-0 items-center gap-2">
+          <button
+            type="button"
+            onClick={toggleSearch}
+            className={`rounded-xl p-2.5 transition-colors ${
+              isSearchOpen
+                ? 'bg-[#8B5CF6]/10 text-[#8B5CF6]'
+                : 'text-[#211B35] hover:bg-[#211B35]/5 hover:text-[#8B5CF6]'
+            }`}
+            aria-label={isSearchOpen ? 'Cerrar buscador' : 'Abrir buscador'}
+            aria-expanded={isSearchOpen}
+            aria-controls="buscador"
+          >
+            <Search className="h-5 w-5" />
+          </button>
           <Link
             href="/contar-mi-historia"
             className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-bold text-white bg-[#8B5CF6] hover:bg-[#7C3AED] active:scale-95 transition-all duration-150 rounded-xl shadow-[0_4px_14px_rgba(139,92,246,0.35)] hover:shadow-[0_6px_20px_rgba(139,92,246,0.45)] whitespace-nowrap"

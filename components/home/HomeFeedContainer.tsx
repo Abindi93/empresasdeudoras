@@ -6,9 +6,10 @@ import { StoryFeed } from '@/components/stories/StoryFeed';
 import { fetchStories } from '@/lib/api';
 import { MOCK_STORIES } from '@/lib/mock-data/stories';
 import type { Story } from '@/lib/types';
+import { useSiteSearch } from '@/components/search/SearchContext';
 
 export function HomeFeedContainer() {
-  const [searchTerm, setSearchTerm] = useState('');
+  const { isSearchOpen, searchTerm, setSearchTerm } = useSiteSearch();
   const [stories, setStories] = useState<Story[]>(MOCK_STORIES);
 
   useEffect(() => {
@@ -24,7 +25,7 @@ export function HomeFeedContainer() {
 
   return (
     <div className="w-full">
-      <Hero searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+      {isSearchOpen && <Hero searchTerm={searchTerm} onSearchChange={setSearchTerm} />}
       <StoryFeed initialStories={stories} searchFilter={searchTerm} />
     </div>
   );
